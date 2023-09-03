@@ -5,7 +5,7 @@ lang_dir="$udp_file/lang"
 lang="$lang_dir/lang"
 
 idioam_lang(){
-  source <(curl -sSl 'https://raw.githubusercontent.com/rudi9999/SocksIP-udpServer/main/lang/lang')
+  source <(curl -sSl 'https://raw.githubusercontent.com/Lordsniffer22/Hackwell101/main/lang/lang')
   title -ama 'IDIOMA/LANGUAGE'
   echo " $(msg -verd "[0]") $(msg -verm2 '>') $(msg -azu "Español Default")"
   n=0
@@ -22,7 +22,7 @@ idioam_lang(){
   let lg-- 
   [[ ! -d $lang_dir/${list_lang[$lg]} ]] && mkdir -p $lang_dir/${list_lang[$lg]} || rm -rf $lang_dir/${list_lang[$lg]}/*
   for arch in $listarq; do
-    if ! wget -O $lang_dir/${list_lang[$lg]}/$arch "https://raw.githubusercontent.com/rudi9999/SocksIP-udpServer/main/lang/${list_lang[$lg]}/$arch" &>/dev/null ;then
+    if ! wget -O $lang_dir/${list_lang[$lg]}/$arch "https://raw.githubusercontent.com/Lordsniffer22/Hackwell101/main/lang/${list_lang[$lg]}/$arch" &>/dev/null ;then
       rm -rf $lang_dir/${list_lang[$lg]}
       echo '' > $lang ; exit
     fi
@@ -79,7 +79,7 @@ if [[ ! -e $udp_file/UDPserver.sh ]]; then
 	wget -O $udp_file/module 'https://raw.githubusercontent.com/rudi9999/Herramientas/main/module/module' &>/dev/null
 	chmod +x $udp_file/module
 	#source $udp_file/module
-	wget -O $udp_file/limitador.sh "https://raw.githubusercontent.com/rudi9999/SocksIP-udpServer/main/limitador.sh" &>/dev/null
+	wget -O $udp_file/limitador.sh "https://raw.githubusercontent.com/Lordsniffer22/Hackwell101/main/limitador.sh" &>/dev/null
 	chmod +x $udp_file/limitador.sh
 	echo '/etc/UDPserver/UDPserver.sh' > /usr/bin/udp
 	chmod +x /usr/bin/udp
