@@ -13,9 +13,6 @@ hystban_me
 ###
 wget -O /usr/bin/udp 'https://raw.githubusercontent.com/Lordsniffer22/Hackwell101/main/udp.sh' &>/dev/null
 chmod +x /usr/bin/udp
-ufw disable &>/dev/null
-sudo apt-get remove --purge ufw firewalld -y &>/dev/null
-apt remove netfilter-persistent -y &>/dev/null
 
 # PROTOCOL
 PROTOCOL="udp"
@@ -900,10 +897,10 @@ perform_install() {
 		_is_frash_install=1
 		fi
 		
- 						perform_install_hysteria_binary &>/dev/null
-						perform_install_hysteria_example_config &>/dev/null
-						perform_install_hysteria_home_legacy &>/dev/null
-						perform_install_hysteria_systemd &>/dev/null
+ 						perform_install_hysteria_binary 
+						perform_install_hysteria_example_config 
+						perform_install_hysteria_home_legacy
+						perform_install_hysteria_systemd
 						setup_ssl
 					    start_services
 						if [[ -n "$_is_frash_install" ]]; then
@@ -918,8 +915,8 @@ perform_install() {
 							reboot
 							else
 							    echo "Wait as we maintain the server"
-								restart_running_services &>/dev/null
-								start_services &>/dev/null
+								restart_running_services 
+								start_services 
 								echo ""
 								echo -e "$(tbold)Tesla UDP Hysteria has been successfully update to $VERSION.$(treset)"
 								echo ""
@@ -927,9 +924,9 @@ perform_install() {
 }
 
 perform_remove() {
-	perform_remove_hysteria_binary &>/dev/null
-	stop_running_services &>/dev/null
-	perform_remove_hysteria_systemd &>/dev/null
+	perform_remove_hysteria_binary 
+	stop_running_services 
+	perform_remove_hysteria_systemd 
 	
 	echo
 	clear
