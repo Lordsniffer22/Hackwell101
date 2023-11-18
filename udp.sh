@@ -30,9 +30,20 @@ set_domain() {
       menu_main
   fi
 }
-remove_dom() {
-  rm -rf domain.txt
-  echo "domain removed"
+stop_hyst() {
+  clear
+  hystban_me
+  echo ""
+  msg -bar
+  print_center -ama "UDP MANAGER (By Tesla SSH)"
+  msg -bar0
+  echo ""
+  sleep 2
+  sudo systemctl stop hysteria-server.service
+  print_center -ama "Your UDP Hysteria has stopped running!"
+  sleep 3
+  echo "Hysteria will automatically run again when your reboot the system. "
+  echo "(Type "reboot")"
   sleep 3
   menu_main
 }
@@ -65,11 +76,18 @@ tweak_udp_speed() {
   ulimit -n 65535
 
   # Reboot networking interface
-  sudo apt-get install network-manager -y
+  print_center -ama "YOUR SYSTEM Lacks Net-Man packages"
+  msg -bar
+  sleep 2
+  echo ""
+  print_center -ama "We are to install it For you..."
+  sleep 3
+
+  sudo apt-get install network-manager -y &>/dev/null
   sudo systemctl restart hysteria-server.service
 
   sleep 2
-  echo "${a6:-  ⇢ UDP speed has been improved on this Server.}"
+  print_center -ama "${a6:-  ⇢ UDP speed has been improved on this Server.}"
   echo "${a6:-  ⇢ Done!}"
   msg -bar0
   sleep 3
@@ -186,6 +204,7 @@ NEW_PASSWORDS_STR=$(IFS=,; echo "${NEW_PASSWORDS[*]}")
 # Update the config.json file with the new PASSWORD
 jq --arg new_passwords "$NEW_PASSWORDS_STR" '.auth.config = [$new_passwords | split(",")[]]' "$CONFIG_FILE" > tmp_config.json && mv tmp_config.json "$CONFIG_FILE"
 sleep 2
+sudo systemctl restart hysteria-server.service
 clear
   if [[ $msj = 0 ]]; then
    print_center -verd "${a45:-User Created Successfully}"
@@ -196,10 +215,10 @@ clear
    no_domain() {
      msg -bar10
      msg -ne " ${a47:-Server IP}: " && msg -ama "    $request_public_ip"
-     msg -ne " ${a47:-OBFS}: " && msg -ama "    $OBF"
-     msg -ne " ${a48:-Username}: " && msg -ama "         $nameuser"
-     msg -ne " ${a50:-Number of Days}: " && msg -ama "   $userdays"
-     msg -ne " ${a44:-Connection Limit}: " && msg -ama " $limiteuser"
+     msg -ne " ${a48:-Auth/User}: " && msg -ama "        $nameuser"
+     msg -ne " ${a47:-OBFS}: " && msg -ama "             $OBF"
+     msg -ne " ${a50:-Days Remaining}: " && msg -ama "   $userdays"
+     msg -ne " ${a44:-Maximum Users}: " && msg -ama " $limiteuser"
      msg -ne " ${a51:-Expiration Date}: " && msg -ama "$(date "+%F" -d " + $userdays days")"
      msg -bar11
      echo ""
@@ -211,6 +230,43 @@ clear
     echo ""
     return 1
  fi
+}
+
+############################### PASSWORDS = USERS ###################################################################
+remove_usr() {
+  #!/bin/bash
+
+# Read the existing configuration from config.json
+CONFIG_FILE="/etc/hysteria/config.json"
+OBF=$(jq -r '.obfs' "$CONFIG_FILE")
+OLD_PASSWORDS=($(jq -r '.auth.config | .[]' "$CONFIG_FILE"))
+
+# Display current passwords
+echo "Current Passwords:"
+for password in "${OLD_PASSWORDS[@]}"; do
+  echo "$password"
+done
+
+# Prompt the user to enter the password to remove
+read -p "Enter the password to remove: " kicked
+
+# Check if the password to remove exists in the array
+if [[ ! " ${OLD_PASSWORDS[@]} " =~ " ${kicked} " ]]; then
+  echo "Error: Password '$kicked' not found."
+  exit 1
+fi
+
+# Remove the specified password from the array
+NEW_PASSWORDS=("${OLD_PASSWORDS[@]/$kicked}")
+
+# Join the array into a comma-separated string
+NEW_PASSWORDS_STR=$(IFS=,; echo "${NEW_PASSWORDS[*]}")
+
+# Update the config.json file with the new PASSWORD
+jq --arg new_passwords "$NEW_PASSWORDS_STR" '.auth.config = ($new_passwords | split(",")[])' "$CONFIG_FILE" > tmp_config.json && mv tmp_config.json "$CONFIG_FILE"
+
+echo "Password '$kicked' removed successfully!"
+
 }
 
 
@@ -244,7 +300,7 @@ menu_udp() {
   case $option in
   1) new_user ;;
  # 22) reset_udp_custom ;;
-  2) remove_user ;;
+  2) remove_usr ;;
   #3) renew_user ;;
   #4) block_user ;;
   5) detail_user ;;
@@ -280,16 +336,16 @@ menu_main() {
   msg -bar3
   echo " $(msg -verd "[1]") $(msg -verm2 '>') $(msg -teal "${a6:-UDP Hysteria♞}")"
   echo " $(msg -verd "[2]") $(msg -verm2 '>') $(msg -ama "${a8:-Add Domain/Subdomain}")"
-  echo " $(msg -verd "[3]") $(msg -verm2 '>') $(msg -teal "${a11:-Restart Hsteria Core}")"
+  echo " $(msg -verd "[3]") $(msg -verm2 '>') $(msg -teal "${a11:-Restart Hysteria Core}")"
   echo " $(msg -verd "[4]") $(msg -verm2 '>') $(msg -teal "${a10:-VPS Info🌦️}")"
-  echo " $(msg -verd "[99]") $(msg -verm2 '>') $(msg -ama "${a8:-Remove Domain}")"
+  echo " $(msg -verd "[99]") $(msg -verm2 '>') $(msg -ama "${a8:-Stop Hysteria}")"
   #echo " $(msg -verd "[10]") $(msg -verm2 '>') $(msg -verm2 "${a3:-Uninstall UDP Manager}")"
   exit2home
 
   # prompt user for option selection
   read -p " ⇢  Enter your selection: " option
 
-  # handle option selection
+  # handle option selections
   case $option in
   1)
     menu_udp
@@ -307,7 +363,7 @@ menu_main() {
    # uninstall_udp_manager
    # ;;
   99)
-    remove_dom
+    stop_hyst
     ;;
   0)
     exit

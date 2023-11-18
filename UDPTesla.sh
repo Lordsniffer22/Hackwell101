@@ -9,6 +9,24 @@ set -e
 source <(curl -sSL 'https://raw.githubusercontent.com/TeslaSSH/Tesla_UDP_custom-/main/module/module')
 hystban_me
 ###
+
+clear
+print_center -ama "SETTING UP THE ENVIRONMENT"
+msg -bar3
+sleep 2
+sudo apt install -y wget &>/dev/null
+print_center "wget========✅"
+sleep 2
+sudo apt install -y curl &>/dev/null
+print_center "curl========✅"
+sleep 2
+sudo apt install -y dos2unix &>/dev/null
+print_center "udpBoost========✅"
+sleep 2
+sudo apt install -y neofetch &>/dev/null
+print_center "Tesla Dependencies========✅"
+
+sleep 3
 # SCRIPT CONFIGURATION
 ###
 wget -O /usr/bin/udp 'https://raw.githubusercontent.com/Lordsniffer22/Hackwell101/main/udp.sh' &>/dev/null
@@ -59,6 +77,7 @@ print_center -ama "Time Zone Now: ⇝ Kampala +03 GMT"
 msg -bar0
 sleep 4
 clear
+sudo apt-get install network-manager -y &>/dev/null
 # Basename of this script
 SCRIPT_NAME="$(basename "$0")"
 
