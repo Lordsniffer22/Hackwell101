@@ -180,9 +180,11 @@ OLD_PASSWORDS=$(jq -r '.auth.config | .[]' "$CONFIG_FILE")
 
 # Append the new PASSWORD to the array
 NEW_PASSWORDS=($OLD_PASSWORDS "$nameuser")
+# Join the array into a comma-separated string
+NEW_PASSWORDS_STR=$(IFS=,; echo "${NEW_PASSWORDS[*]}")
 
 # Update the config.json file with the new PASSWORD
-jq --argjson new_passwords "$NEW_PASSWORDS" '.auth.config = $new_passwords' "$CONFIG_FILE" > tmp_config.json && mv tmp_config.json "$CONFIG_FILE"
+jq --arg new_passwords "$NEW_PASSWORDS_STR" '.auth.config = [$new_passwords | split(",")[]]' "$CONFIG_FILE" > tmp_config.json && mv tmp_config.json "$CONFIG_FILE"
 sleep 2
 clear
   if [[ $msj = 0 ]]; then
