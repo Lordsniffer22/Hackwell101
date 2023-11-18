@@ -107,6 +107,16 @@ vps_info() {
   enter
 }
 
+stepback() {
+ 
+ read -p "press enter to go to menu" confm
+ sleep 2
+ case $confm in
+   [Yy]* ) menu_udp ;;
+   [Nn]* ) menu_main ;;
+   * ) menu_udp ;;
+ esac
+}
 # ADD NEW USER
 new_user() {
   clear
@@ -114,7 +124,7 @@ new_user() {
   echo ""
   msg -bar
   print_center -ama "CREATE NEW USER"
-  masg -bar0
+  msg -bar0
   echo ""
   #!/bin/bash
 
@@ -184,7 +194,7 @@ clear
    no_domain() {
      msg -bar10
      msg -ne " ${a47:-Server IP}: " && msg -ama "    $request_public_ip"
-     msg -ne " ${a47:-Port Range}: " && msg -ama "    $OBF"
+     msg -ne " ${a47:-OBFS}: " && msg -ama "    $OBF"
      msg -ne " ${a48:-Username}: " && msg -ama "         $nameuser"
      msg -ne " ${a50:-Number of Days}: " && msg -ama "   $userdays"
      msg -ne " ${a44:-Connection Limit}: " && msg -ama " $limiteuser"
@@ -193,7 +203,7 @@ clear
      echo ""
      }
    no_domain
-   back2back 
+   stepback 
   else
     print_center -verm2 "${a46:-Error, user not created}"
     echo ""
