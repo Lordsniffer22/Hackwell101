@@ -176,29 +176,29 @@ NEW_PASSWORDS=($OLD_PASSWORDS "$nameuser")
 jq --argjson new_passwords "$NEW_PASSWORDS" '.auth.config = $new_passwords' "$CONFIG_FILE" > tmp_config.json && mv tmp_config.json "$CONFIG_FILE"
 sleep 2
 clear
-if [[ $msj = 0 ]]; then
-  print_center -verd "${a45:-User Created Successfully}"
-  msg -bar3
-  echo ""
-  print_center -verd "${a230:-User Details}: "
-  echo ""
-  no_domain() {
-    msg -bar10
-    msg -ne " ${a47:-Server IP}: " && msg -ama "    $request_public_ip"
-    msg -ne " ${a47:-Port Range}: " && msg -ama "    $OBF"
-    msg -ne " ${a48:-Username}: " && msg -ama "         $nameuser"
-    msg -ne " ${a50:-Number of Days}: " && msg -ama "   $userdays"
-    msg -ne " ${a44:-Connection Limit}: " && msg -ama " $limiteuser"
-    msg -ne " ${a51:-Expiration Date}: " && msg -ama "$(date "+%F" -d " + $userdays days")"
-    msg -bar11
-    echo ""
-  no_domain
-  back2back
-else
-  print_center -verm2 "${a46:-Error, user not created}"
-  echo ""
-  return 1
-fi
+ if [[ $msj = 0 ]]; then
+   print_center -verd "${a45:-User Created Successfully}"
+   msg -bar3
+   echo ""
+   print_center -verd "${a230:-User Details}: "
+   echo ""
+   no_domain() {
+     msg -bar10
+     msg -ne " ${a47:-Server IP}: " && msg -ama "    $request_public_ip"
+     msg -ne " ${a47:-Port Range}: " && msg -ama "    $OBF"
+     msg -ne " ${a48:-Username}: " && msg -ama "         $nameuser"
+     msg -ne " ${a50:-Number of Days}: " && msg -ama "   $userdays"
+     msg -ne " ${a44:-Connection Limit}: " && msg -ama " $limiteuser"
+     msg -ne " ${a51:-Expiration Date}: " && msg -ama "$(date "+%F" -d " + $userdays days")"
+     msg -bar11
+     echo ""
+   no_domain
+   back2back 
+ else
+   print_center -verm2 "${a46:-Error, user not created}"
+   echo ""
+   return 1
+ fi
 }
 
 
