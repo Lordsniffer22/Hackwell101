@@ -2,6 +2,8 @@
 # UDP Hysteria menu By Tesla SS
 dmain=$(cat domain.txt)
 source <(curl -sSL 'https://raw.githubusercontent.com/TeslaSSH/Tesla_UDP_custom-/main/module/module')
+request_public_ip=$(grep -m 1 -oE '^[0-9]{1,3}(\.[0-9]{1,3}){3}$' <<<"$(wget -T 10 -t 1 -4qO- "http://ip1.dynupdate.no-ip.com/" || curl -m 10 -4Ls "http://ip1.dynupdate.no-ip.com/")")
+
 # [MAIN MENU]
 
 #DOMAIN SETTINGS
@@ -105,8 +107,102 @@ vps_info() {
   enter
 }
 
+OBF=$(jq -r '.obfs' "$CONFIG_FILE")
+
+# ADD NEW USER
+new_user() {
+  clear
+  hystban_me
+  echo ""
+  msg -bar
+  print_center -ama "CREATE NEW USER"
+  masg -bar0
+  echo ""
+  #!/bin/bash
+
+# Prompt the user for the new PASSWORD
+  while true; do
+    msg -ne " Enter the new username: "
+    read nameuser
+    nameuser="$(echo $nameuser | sed 'y/áÁàÀãÃâÂéÉêÊíÍóÓõÕôÔúÚñÑçÇªº/aAaAaAaAeEeEiIoOoOoOuUnNcCao/')"
+    nameuser="$(echo $nameuser | sed -e 's/[^a-z0-9 -]//ig')"
+    if [[ -z $nameuser ]]; then
+      err_fun 1 && continue
+    elif [[ "${nameuser}" = "0" ]]; then
+      return
+    elif [[ "${#nameuser}" -lt "4" ]]; then
+      err_fun 2 && continue
+    elif [[ "${#nameuser}" -gt "12" ]]; then
+      err_fun 3 && continue
+    elif [[ "$(echo ${active_users[@]} | grep -w "$nameuser")" ]]; then
+      err_fun 14 && continue
+    fi
+    break
+  done
+    while true; do
+    msg -ne " ${a43:-Number of Days}"
+    read -p ": " userdays
+    if [[ -z "$userdays" ]]; then
+      err_fun 7 && continue
+    elif [[ "$userdays" != +([0-9]) ]]; then
+      err_fun 8 && continue
+    elif [[ "$userdays" -gt "360" ]]; then
+      err_fun 9 && continue
+    fi
+    break
+  done
+
+  while true; do
+    msg -ne " ${a44:-Connection Limit}"
+    read -p ": " limiteuser
+    if [[ -z "$limiteuser" ]]; then
+      err_fun 11 && continue
+    elif [[ "$limiteuser" != +([0-9]) ]]; then
+      err_fun 12 && continue
+    elif [[ "$limiteuser" -gt "999" ]]; then
+      err_fun 13 && continue
+    fi
+    break
+  done
+msj=$?
+# Read the existing configuration from config.json
+CONFIG_FILE="/etc/hysteria/config.json"
+OLD_PASSWORDS=$(jq -r '.auth.config | .[]' "$CONFIG_FILE")
+
+# Append the new PASSWORD to the array
+NEW_PASSWORDS=($OLD_PASSWORDS "$nameuser")
+
+# Update the config.json file with the new PASSWORD
+jq --argjson new_passwords "$NEW_PASSWORDS" '.auth.config = $new_passwords' "$CONFIG_FILE" > tmp_config.json && mv tmp_config.json "$CONFIG_FILE"
+sleep 2
+clear
+if [[ $msj = 0 ]]; then
+  print_center -verd "${a45:-User Created Successfully}"
+  msg -bar3
+  echo ""
+  print_center -verd "${a230:-User Details}: "
+  echo ""
+  no_domain() {
+    msg -bar10
+    msg -ne " ${a47:-Server IP}: " && msg -ama "    $request_public_ip"
+    msg -ne " ${a47:-Port Range}: " && msg -ama "    $OBF"
+    msg -ne " ${a48:-Username}: " && msg -ama "         $nameuser"
+    msg -ne " ${a50:-Number of Days}: " && msg -ama "   $userdays"
+    msg -ne " ${a44:-Connection Limit}: " && msg -ama " $limiteuser"
+    msg -ne " ${a51:-Expiration Date}: " && msg -ama "$(date "+%F" -d " + $userdays days")"
+    msg -bar11
+    echo ""
+  no_domain
+  back2back
+else
+  print_center -verm2 "${a46:-Error, user not created}"
+  echo ""
+  return 1
+fi
+}
 
 
+#FETCH HYSTERA MENU
 menu_udp() {
   clear
   hystban_me

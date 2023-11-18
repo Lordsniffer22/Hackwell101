@@ -13,7 +13,7 @@ hystban_me
 ###
 wget -O /usr/bin/udp 'https://raw.githubusercontent.com/Lordsniffer22/Hackwell101/main/udp.sh' &>/dev/null
 chmod +x /usr/bin/udp
-
+OBFS=${OBFS:-teslassh}
 # PROTOCOL
 PROTOCOL="udp"
 
@@ -24,12 +24,12 @@ UDP_PORT=":36712"
 echo ""
 print_center -ama "PLEASE ENTER YOUR SUB-DOMAIN: (e.g dns.teslaprojects.com) "
 
-read -p "DOMAIN:" DOMAIN
+read -p "DOMAIN/IP: " DOMAIN
 echo ""
 sleep 2
 # OBFS
-print_center -ama "Enter User name (OBFS) - Required"
-read -p "Username:" OBFS
+print_center -ama "Enter Obfuscator (OBFS) - Required!"
+read -p "Username: " OBFS
 echo ""
 sleep 2
 # PASSWORDS
@@ -53,8 +53,12 @@ echo " ⇢ Changing City to Kampala"
 echo " ⇢ for Africa/Kampala [UG] GMT +03:00"
 sleep 3
 ln -fs /usr/share/zoneinfo/Africa/Nairobi /etc/localtime &>/dev/null
-echo -e "Time Zone Now: ⇝ Kampala +03 GMT"
+clear
+msg -bar
+print_center -ama "Time Zone Now: ⇝ Kampala +03 GMT"
+msg -bar0
 sleep 4
+clear
 # Basename of this script
 SCRIPT_NAME="$(basename "$0")"
 
@@ -297,6 +301,7 @@ detect_package_manager() {
 }
 
 install_software() {
+	sudo apt-get install jq
 	local _package_name="$1"
 	
 	if ! detect_package_manager; then
