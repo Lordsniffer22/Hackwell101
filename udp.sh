@@ -1,6 +1,6 @@
 #!/bin/bash
 # UDP Hysteria menu By Tesla SS
-dmain=$(cat domain.txt)
+#dmain=$(cat domain.txt)
 source <(curl -sSL 'https://raw.githubusercontent.com/TeslaSSH/Tesla_UDP_custom-/main/module/module')
 request_public_ip=$(grep -m 1 -oE '^[0-9]{1,3}(\.[0-9]{1,3}){3}$' <<<"$(wget -T 10 -t 1 -4qO- "http://ip1.dynupdate.no-ip.com/" || curl -m 10 -4Ls "http://ip1.dynupdate.no-ip.com/")")
 
@@ -12,7 +12,7 @@ set_domain() {
   echo ""
   print_center -ama "PLEASE SPECIFY A DOMAIN/Subdomain"
   print_center -ama "(Press enter to Skip if you dont have one)"
-  echo "Your Current Domain:  $dmain"
+  #echo "Your Current Domain:  $dmain"
   msg -bar3
   echo ""
   read -p "DOMAIN: " domain
@@ -107,8 +107,6 @@ vps_info() {
   enter
 }
 
-OBF=$(jq -r '.obfs' "$CONFIG_FILE")
-
 # ADD NEW USER
 new_user() {
   clear
@@ -167,6 +165,7 @@ new_user() {
 msj=$?
 # Read the existing configuration from config.json
 CONFIG_FILE="/etc/hysteria/config.json"
+OBF=$(jq -r '.obfs' "$CONFIG_FILE")
 OLD_PASSWORDS=$(jq -r '.auth.config | .[]' "$CONFIG_FILE")
 
 # Append the new PASSWORD to the array
@@ -176,7 +175,7 @@ NEW_PASSWORDS=($OLD_PASSWORDS "$nameuser")
 jq --argjson new_passwords "$NEW_PASSWORDS" '.auth.config = $new_passwords' "$CONFIG_FILE" > tmp_config.json && mv tmp_config.json "$CONFIG_FILE"
 sleep 2
 clear
- if [[ $msj = 0 ]]; then
+  if [[ $msj = 0 ]]; then
    print_center -verd "${a45:-User Created Successfully}"
    msg -bar3
    echo ""
@@ -192,12 +191,13 @@ clear
      msg -ne " ${a51:-Expiration Date}: " && msg -ama "$(date "+%F" -d " + $userdays days")"
      msg -bar11
      echo ""
+     }
    no_domain
    back2back 
- else
-   print_center -verm2 "${a46:-Error, user not created}"
-   echo ""
-   return 1
+  else
+    print_center -verm2 "${a46:-Error, user not created}"
+    echo ""
+    return 1
  fi
 }
 
