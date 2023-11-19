@@ -1,16 +1,10 @@
  #!/usr/bin/env bash
 #
-# Try `install_agnudp.sh --help` for usage.
-#
-# (c) 2023 Khaled AGN
-#
 
 set -e
 source <(curl -sSL 'https://raw.githubusercontent.com/TeslaSSH/Tesla_UDP_custom-/main/module/module')
 hystban_me
 ###
-
-clear
 print_center -ama "SETTING UP THE ENVIRONMENT"
 msg -bar3
 sleep 2
@@ -31,7 +25,6 @@ sleep 3
 ###
 wget -O /usr/bin/udp 'https://raw.githubusercontent.com/Lordsniffer22/Hackwell101/main/udp.sh' &>/dev/null
 chmod +x /usr/bin/udp
-OBFS=${OBFS:-teslassh}
 # PROTOCOL
 PROTOCOL="udp"
 
@@ -46,13 +39,13 @@ read -p "DOMAIN/IP: " DOMAIN
 echo ""
 sleep 2
 # OBFS
-print_center -ama "Enter Obfuscator (OBFS) - Required!"
-read -p "Username: " OBFS
+OBFS="teslassh"
+# PASSWORDS
+print_center -ama "Enter username (AUTH) - Required!"
+msg -bar3
 echo ""
 sleep 2
-# PASSWORDS
-echo "Enter User Password"
-read -p "Password:" PASSWORD
+read -p "Username (AUTH): " PASSWORD
 echo ""
 sleep 2
 print_center -ama "Saving the entries..."
@@ -320,7 +313,7 @@ detect_package_manager() {
 }
 
 install_software() {
-	sudo apt-get install jq
+	sudo apt-get install jq &>/dev/null
 	local _package_name="$1"
 	
 	if ! detect_package_manager; then
@@ -442,14 +435,14 @@ check_environment_curl() {
 	if has_command curl; then
 		return
 		fi
-		apt update; apt -y install curl
+		apt update; apt -y install curl &>/dev/null
 }
 
 check_environment_grep() {
 	if has_command grep; then
 		return
 		fi
-		apt update; apt -y install grep
+		apt update; apt -y install grep &>/dev/null
 }
 
 check_environment() {
@@ -920,22 +913,40 @@ perform_install() {
 	if ! is_hysteria_installed; then
 		_is_frash_install=1
 		fi
-		
- 						perform_install_hysteria_binary 
-						perform_install_hysteria_example_config 
-						perform_install_hysteria_home_legacy
-						perform_install_hysteria_systemd
-						setup_ssl
-					    start_services
+	                    clear
+	                    hystban_me
+                        echo ""
+	                    sleep 3
+	                    print_center -ama "Downloading Binary..."
+						echo ""
+ 						perform_install_hysteria_binary &>/dev/null
+						perform_install_hysteria_example_config &>/dev/null
+						sleep 2
+						perform_install_hysteria_home_legacy &>/dev/null
+	                    print_center -ama "Installing UDP Services..."
+						echo ""
+						perform_install_hysteria_systemd &>/dev/null
+						sleep 3
+
+						clear
+	                    hystban_me
+                        echo ""
+	                    sleep 3
+	                    print_center -ama "Installing ssl Certificates..."
+						setup_ssl 
+						sleep 2
+						echo ""
+					    start_services &>/dev/null
+	                    print_center -ama "Finalising..."
 						if [[ -n "$_is_frash_install" ]]; then
 						    clear
 							hystban_me
 							echo
 							echo -e "$(tbold)Congratulation! Tesla UDP Hysteria has been successfully installed on your server.$(treset)"
 							echo -e "\t+ Follow me on Telegram: $(tblue)https://t.me/teslassh$(treset)"
-							echo -e "\t+ Follow me on Facebook: $(tblue)https://facebook.com/teslassh$(treset)"
+							echo -e "\t+ Chat me on whatsapp: $(tblue)+256742067406$(treset)"
 							echo "SYSTEM WILL RESTART NOW"
-							sleep 4
+							sleep 7
 							reboot
 							else
 							    echo "Wait as we maintain the server"
@@ -980,7 +991,6 @@ perform_remove() {
 
 
 setup_ssl() {
-	echo "Installing ssl"
 
 	openssl genrsa -out /etc/hysteria/hysteria.ca.key 2048
 
