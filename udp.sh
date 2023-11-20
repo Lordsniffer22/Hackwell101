@@ -135,6 +135,39 @@ stepback() {
    * ) menu_udp ;;
  esac
 }
+
+
+
+detail_user() {
+
+CONFIG_FILE="/etc/hysteria/config.json"
+OBF=$(jq -r '.obfs' "$CONFIG_FILE")
+OLD_PASSWORDS=($(jq -r '.auth.config | .[]' "$CONFIG_FILE"))
+
+# Check if there are passwords
+if [ ${#OLD_PASSWORDS[@]} -eq 0 ]; then
+    echo ""
+    print_center -ama "NO USERS FOUND IN THE DATABASE!"
+    msg -bar3
+    exit 1
+fi
+
+# Print the passwords line by line
+echo ""
+print_center -ama "USERS/AUTHS:"
+msg -bar3
+if [ ${#OLD_PASSWORDS[@]} -eq 1 ]; then
+    echo "${OLD_PASSWORDS[0]}"
+else
+    for password in "${OLD_PASSWORDS[@]}"; do
+        echo "$password"
+    done
+fi
+
+}
+
+
+
 # ADD NEW USER
 new_user() {
   clear
@@ -234,18 +267,31 @@ clear
 
 ############################### PASSWORDS = USERS ###################################################################
 remove_usr() {
-  #!/bin/bash
-
 # Read the existing configuration from config.json
 CONFIG_FILE="/etc/hysteria/config.json"
 OBF=$(jq -r '.obfs' "$CONFIG_FILE")
 OLD_PASSWORDS=($(jq -r '.auth.config | .[]' "$CONFIG_FILE"))
 
-# Display current passwords
-echo "Current Passwords:"
-for password in "${OLD_PASSWORDS[@]}"; do
-  echo "$password"
-done
+# Check if there are passwords
+if [ ${#OLD_PASSWORDS[@]} -eq 0 ]; then
+    echo ""
+    print_center -ama "NO USERS FOUND IN THE DATABASE!"
+    msg -bar3
+    exit 1
+fi
+
+# Print the passwords line by line
+echo ""
+print_center -ama "USERS/AUTHS:"
+msg -bar3
+if [ ${#OLD_PASSWORDS[@]} -eq 1 ]; then
+    echo "${OLD_PASSWORDS[0]}"
+else
+    for password in "${OLD_PASSWORDS[@]}"; do
+        echo "$password"
+    done
+fi
+
 
 # Prompt the user to enter the password to remove
 read -p "Enter the password to remove: " kicked

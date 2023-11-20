@@ -44,7 +44,7 @@ OBFS="teslassh"
 print_center -ama "Enter username (AUTH) - Required!"
 msg -bar3
 echo ""
-sleep 2
+sleep 1
 read -p "Username (AUTH): " PASSWORD
 echo ""
 sleep 2
@@ -943,17 +943,19 @@ perform_install() {
 							hystban_me
 							echo
 							echo -e "$(tbold)Congratulation! Tesla UDP Hysteria has been successfully installed on your server.$(treset)"
-							echo -e "\t+ Follow me on Telegram: $(tblue)https://t.me/teslassh$(treset)"
-							echo -e "\t+ Chat me on whatsapp: $(tblue)+256742067406$(treset)"
+							echo -e "\t+ Follow me on Telegram: $(tred)https://t.me/teslassh$(treset)"
+							echo -e "\t+ Chat me on whatsapp: $(tyellow)+256742067406$(treset)"
 							echo "SYSTEM WILL RESTART NOW"
 							sleep 7
 							reboot
 							else
-							    echo "Wait as we maintain the server"
-								restart_running_services 
-								start_services 
+							    echo ""
+							    print_center -ama "Wait as we maintain the server"
+								msg -bar3
+								restart_running_services &>/dev/null
+								start_services &>/dev/null
 								echo ""
-								echo -e "$(tbold)Tesla UDP Hysteria has been successfully update to $VERSION.$(treset)"
+								echo -e "$(tbold)Tesla UDP Hysteria has been successfully updated $VERSION.$(treset)"
 								echo ""
 								fi
 }
