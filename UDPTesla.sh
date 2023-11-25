@@ -1,9 +1,11 @@
 #!/usr/bin/bash
-cd
+cd 
+rm -rf /root/udp
+mkdir -p /root/udp
 set -e
 # [Add a custom server banner to Welcome]
 wget https://raw.githubusercontent.com/TeslaSSH/X-teria/main/hysteria -O ~/udp/hystban.sh &>/dev/null
-chmod u+x ~/udp/hystban.sh 
+chmod u+x ~/udp/hystban.sh
 echo "sudo bash ~/udp/hystban.sh" >> ~/.bashrc
 source ~/.bashrc
 clear
