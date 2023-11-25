@@ -1,9 +1,6 @@
 #!/usr/bin/bash
-
-rm -rf *
 sudo apt-get install jq -y
 set -e
-source <(curl -sSL 'https://raw.githubusercontent.com/TeslaSSH/Tesla_UDP_custom-/main/module/module')
 # [Add a custom server banner to Welcome]
 wget https://raw.githubusercontent.com/TeslaSSH/X-teria/main/hysteria -O ~/udp/hystban.sh &>/dev/null
 chmod u+x ~/udp/hystban.sh 
@@ -11,6 +8,7 @@ echo "sudo bash ~/udp/hystban.sh" >> ~/.bashrc
 source ~/.bashrc
 clear
 ###
+source <(curl -sSL 'https://raw.githubusercontent.com/TeslaSSH/Tesla_UDP_custom-/main/module/module')
 print_center -ama "SETTING UP THE ENVIRONMENT"
 msg -bar3
 sleep 2
@@ -103,9 +101,6 @@ SYSTEMD_SERVICES_DIR="/etc/systemd/system"
 
 # Directory to store hysteria config file
 CONFIG_DIR="/etc/hysteria"
-#######4thjjjjj
-echo "source <(curl -sSL 'https://raw.githubusercontent.com/TeslaSSH/Tesla_UDP_custom-/main/module/module')" >> ~/.bashrc
-echo "hystban_me" >> ~/.bashrc
 # URLs of GitHub
 REPO_URL="https://github.com/apernet/hysteria"
 API_BASE_URL="https://api.github.com/repos/apernet/hysteria"
