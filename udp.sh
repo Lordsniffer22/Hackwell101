@@ -165,6 +165,7 @@ detail_user() {
             print_center -ama "$password"
         done
     fi
+    sleep 3
 }
 
 # ADD NEW USER
