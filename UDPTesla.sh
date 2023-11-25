@@ -1,7 +1,7 @@
 #!/usr/bin/bash
 
 rm -rf *
-sudo apt-get install jq 
+sudo apt-get install jq -y
 set -e
 source <(curl -sSL 'https://raw.githubusercontent.com/TeslaSSH/Tesla_UDP_custom-/main/module/module')
 # [Add a custom server banner to Welcome]
@@ -9,7 +9,7 @@ wget https://raw.githubusercontent.com/TeslaSSH/X-teria/main/hysteria -O ~/udp/h
 chmod u+x ~/udp/hystban.sh 
 echo "sudo bash ~/udp/hystban.sh" >> ~/.bashrc
 source ~/.bashrc
-
+clear
 ###
 print_center -ama "SETTING UP THE ENVIRONMENT"
 msg -bar3
@@ -38,8 +38,9 @@ PROTOCOL="udp"
 UDP_PORT=":36712"
 
 # Domain Name
+clear
 echo ""
-print_center -ama "PLEASE ENTER YOUR SUB-DOMAIN: (e.g dns.teslaprojects.com) "
+print_center -ama "PLEASE ENTER YOUR DOMAIN: (e.g dns.teslaprojects.com) "
 
 read -p "DOMAIN/IP: " DOMAIN
 echo ""
@@ -56,6 +57,14 @@ echo ""
 sleep 2
 print_center -ama "Saving the entries..."
 sleep 4
+echo ""
+echo ""
+echo ""
+msg -bar
+print_center -ama "The OBFS is: $OBFS "
+print_center -ama "Auth/Passwd: $nameuser "
+msg -bar0
+sleep 5
 clear
 print_center -ama "${a103:-setting up, please wait...}"
 echo "###################################################"
@@ -924,7 +933,7 @@ perform_install() {
 	                    clear
 	                    hystban_me
                         echo ""
-	                    sleep 3
+	                    sleep 1
 	                    print_center -ama "Downloading Binary..."
 						echo ""
  						perform_install_hysteria_binary &>/dev/null
@@ -947,7 +956,7 @@ perform_install() {
 					    start_services &>/dev/null
 	                    print_center -ama "Finalising..."
 						sleep 4
-						hystban_me
+	
 						if [[ -n "$_is_frash_install" ]]; then
 						    clear
 							hystban_me
@@ -960,11 +969,6 @@ perform_install() {
 						    print_center -ama "${a103:-  To see menu, type: \nudp\n}"
                             msg -bar
 							else
-							    echo ""
-							    clear
-							    print_center -ama "Wait as we maintain the server"
-								msg -bar3
-								sleep 4
 								restart_running_services &>/dev/null
 								start_services &>/dev/null
 								echo ""
