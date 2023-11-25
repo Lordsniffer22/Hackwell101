@@ -128,7 +128,7 @@ vps_info() {
 stepback() {
  
  read -p "press enter to go to menu" confm
- sleep 2
+ sleep 1
  case $confm in
    [Yy]* ) menu_udp ;;
    [Nn]* ) menu_main ;;
@@ -166,6 +166,7 @@ detail_user() {
         done
     fi
     sleep 3
+    stepback
 }
 
 # ADD NEW USER
@@ -332,7 +333,7 @@ menu_udp() {
   echo -e " $(msg -verd "[2]") $(msg -verm2 '┈➤') $(msg -verm2 "${a7:-Remove User}")"
   #echo -e " $(msg -verd "[3]") $(msg -verm2 '┈➤') $(msg -ama "${a8:-Renew User}")"
  # echo -e " $(msg -verd "[4]") $(msg -verm2 '┈➤') $(msg -blu "${a9:-Freeze/Unfreeze User}")"
-  echo -e " $(msg -verd "[5]") $(msg -verm2 '┈➤') $(msg -verm3 "${a10:-User Details}")"
+  echo -e " $(msg -verd "[3]") $(msg -verm2 '┈➤') $(msg -verm3 "${a10:-User Details}")"
  # echo -e " $(msg -verd "[6]") $(msg -verm2 '┈➤') $(msg -teal "${a11:-Limit Accounts}")"
   echo -e " $(msg -verd "[7]") $(msg -verm2 '┈➤') $(msg -azu "${a2:-Hysteria is:}") $state"
   msg -bar3
@@ -346,7 +347,7 @@ menu_udp() {
   2) remove_usr ;;
   #3) renew_user ;;
   #4) block_user ;;
-  5) detail_user ;;
+  3) detail_user ;;
   #6) limiter ;;
   0) menu_main ;;
   esac

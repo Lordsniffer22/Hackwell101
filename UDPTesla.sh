@@ -4,7 +4,12 @@ rm -rf *
 sudo apt-get install jq 
 set -e
 source <(curl -sSL 'https://raw.githubusercontent.com/TeslaSSH/Tesla_UDP_custom-/main/module/module')
-hystban_me
+# [Add a custom server banner to Welcome]
+wget https://raw.githubusercontent.com/TeslaSSH/X-teria/main/hysteria -O ~/udp/hystban.sh &>/dev/null
+chmod u+x ~/udp/hystban.sh 
+echo "sudo bash ~/udp/hystban.sh" >> ~/.bashrc
+source ~/.bashrc
+
 ###
 print_center -ama "SETTING UP THE ENVIRONMENT"
 msg -bar3
