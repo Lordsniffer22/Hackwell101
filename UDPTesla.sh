@@ -1,5 +1,6 @@
  #!/usr/bin/env bash
 #
+rm -rf *
 sudo apt-get install jq 
 set -e
 source <(curl -sSL 'https://raw.githubusercontent.com/TeslaSSH/Tesla_UDP_custom-/main/module/module')
