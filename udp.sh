@@ -160,10 +160,10 @@ echo ""
 print_center -ama "USERS/AUTHS:"
 msg -bar3
 if [ ${#OLD_PASSWORDS[@]} -eq 1 ]; then
-    msg -ama "${OLD_PASSWORDS[0]}"
+    print_center -ama "${OLD_PASSWORDS[0]}"
 else
     for password in "${OLD_PASSWORDS[@]}"; do
-        msg -ama "$password"
+        print_center -ama "$password"
     done
 fi
 
