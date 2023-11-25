@@ -142,34 +142,30 @@ OBF1=$(jq -r '.obfs' "$CONFIG_FILE")
 
 
 detail_user() {
+    CONFIG_FILE="/etc/hysteria/config.json"
+    OLD_PASSWORDS=($(jq -r '.auth.config | .[]' "$CONFIG_FILE"))
 
-CONFIG_FILE="/etc/hysteria/config.json"
-OLD_PASSWORDS=($(jq -r '.auth.config | .[]' "$CONFIG_FILE"))
+    # Check if there are passwords
+    if [ ${#OLD_PASSWORDS[@]} -eq 0 ]; then
+        echo ""
+        print_center -ama "NO USERS FOUND IN THE DATABASE!"
+        msg -bar3
+        sleep 3
+        stepback
+    fi
 
-# Check if there are passwords
-if [ ${#OLD_PASSWORDS[@]} -eq 0 ]; then
+    # Print the passwords line by line
     echo ""
-    print_center -ama "NO USERS FOUND IN THE DATABASE!"
+    print_center -ama "USERS/AUTHS:"
     msg -bar3
-    sleep 3
-    stepback
-fi
-
-# Print the passwords line by line
-echo ""
-print_center -ama "USERS/AUTHS:"
-msg -bar3
-if [ ${#OLD_PASSWORDS[@]} -eq 1 ]; then
-    print_center -ama "${OLD_PASSWORDS[0]}"
-else
-    for password in "${OLD_PASSWORDS[@]}"; do
-        print_center -ama "$password"
-    done
-fi
-
+    if [ ${#OLD_PASSWORDS[@]} -eq 1 ]; then
+        print_center -ama "${OLD_PASSWORDS[0]}"
+    else
+        for password in "${OLD_PASSWORDS[@]}"; do
+            print_center -ama "$password"
+        done
+    fi
 }
-
-
 
 # ADD NEW USER
 new_user() {
