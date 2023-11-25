@@ -305,11 +305,8 @@ if [[ ! " ${OLD_PASSWORDS[@]} " =~ " ${kicked} " ]]; then
   exit 1
 fi
 
-# Remove the specified password from the array
-NEW_PASSWORDS=("${OLD_PASSWORDS[@]/$kicked}")
-
-# Update the config.json file with the new PASSWORD
-jq --argjson new_passwords '["${NEW_PASSWORDS[@]}"]' '.auth.config = $new_passwords' "$CONFIG_FILE" > tmp_config.json && mv tmp_config.json "$CONFIG_FILE"
+# Remove the specified password from the array and update the config.json file
+jq --arg kicked "$kicked" '.auth.config = (.auth.config | map(select(. != $kicked)))' "$CONFIG_FILE" > tmp_config.json && mv tmp_config.json "$CONFIG_FILE"
 
 echo "Password '$kicked' removed successfully!"
 
