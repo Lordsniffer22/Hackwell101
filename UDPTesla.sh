@@ -1,6 +1,6 @@
  #!/usr/bin/env bash
 #
-
+sudo apt-get install jq 
 set -e
 source <(curl -sSL 'https://raw.githubusercontent.com/TeslaSSH/Tesla_UDP_custom-/main/module/module')
 hystban_me
@@ -316,7 +316,6 @@ detect_package_manager() {
 }
 
 install_software() {
-	sudo apt-get install jq &>/dev/null
 	local _package_name="$1"
 	
 	if ! detect_package_manager; then

@@ -249,9 +249,9 @@ clear
      msg -bar10
      msg -ne " ${a47:-Server IP}: " && msg -ama "    $request_public_ip"
      msg -ne " ${a48:-Auth/User}: " && msg -ama "        $nameuser"
-     msg -ne " ${a47:-OBFS}: " && msg -ama "             $OBF"
+     msg -ne " ${a47:-OBFS}: " && msg -ama "             $OBFS"
      msg -ne " ${a50:-Days Remaining}: " && msg -ama "   $userdays"
-     msg -ne " ${a44:-Maximum Users}: " && msg -ama " $limiteuser"
+     msg -ne " ${a44:-Maximum Users}: " && msg -ama "    $limiteuser"
      msg -ne " ${a51:-Expiration Date}: " && msg -ama "$(date "+%F" -d " + $userdays days")"
      msg -bar11
      echo ""
@@ -268,6 +268,8 @@ clear
 ############################### PASSWORDS = USERS ###################################################################
 remove_usr() {
 # Read the existing configuration from config.json
+clear
+hystban_me
 CONFIG_FILE="/etc/hysteria/config.json"
 OBF=$(jq -r '.obfs' "$CONFIG_FILE")
 OLD_PASSWORDS=($(jq -r '.auth.config | .[]' "$CONFIG_FILE"))
@@ -277,7 +279,8 @@ if [ ${#OLD_PASSWORDS[@]} -eq 0 ]; then
     echo ""
     print_center -ama "NO USERS FOUND IN THE DATABASE!"
     msg -bar3
-    exit 1
+    sleep 3
+    stepback
 fi
 
 # Print the passwords line by line
@@ -294,7 +297,7 @@ fi
 
 
 # Prompt the user to enter the password to remove
-read -p "Enter the password to remove: " kicked
+read -p "Enter the user to remove: " kicked
 
 # Check if the password to remove exists in the array
 if [[ ! " ${OLD_PASSWORDS[@]} " =~ " ${kicked} " ]]; then
@@ -305,11 +308,8 @@ fi
 # Remove the specified password from the array
 NEW_PASSWORDS=("${OLD_PASSWORDS[@]/$kicked}")
 
-# Join the array into a comma-separated string
-NEW_PASSWORDS_STR=$(IFS=,; echo "${NEW_PASSWORDS[*]}")
-
 # Update the config.json file with the new PASSWORD
-jq --arg new_passwords "$NEW_PASSWORDS_STR" '.auth.config = ($new_passwords | split(",")[])' "$CONFIG_FILE" > tmp_config.json && mv tmp_config.json "$CONFIG_FILE"
+jq --argjson new_passwords '["${NEW_PASSWORDS[@]}"]' '.auth.config = $new_passwords' "$CONFIG_FILE" > tmp_config.json && mv tmp_config.json "$CONFIG_FILE"
 
 echo "Password '$kicked' removed successfully!"
 
