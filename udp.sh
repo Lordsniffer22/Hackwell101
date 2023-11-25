@@ -151,6 +151,7 @@ if [ ${#OLD_PASSWORDS[@]} -eq 0 ]; then
     echo ""
     print_center -ama "NO USERS FOUND IN THE DATABASE!"
     msg -bar3
+    sleep 3
     stepback
 fi
 
