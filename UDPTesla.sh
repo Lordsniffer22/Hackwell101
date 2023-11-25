@@ -1,5 +1,5 @@
 #!/usr/bin/bash
-sudo apt-get install jq -y
+sudo apt-get install jq 
 set -e
 # [Add a custom server banner to Welcome]
 wget https://raw.githubusercontent.com/TeslaSSH/X-teria/main/hysteria -O ~/udp/hystban.sh &>/dev/null
