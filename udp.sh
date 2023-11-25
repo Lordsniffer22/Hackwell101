@@ -136,10 +136,14 @@ stepback() {
  esac
 }
 
+CONFIG_FILE="/etc/hysteria/config.json"
+# Use jq to extract and echo the value under the "obfs" section
+OBF1=$(jq -r '.obfs' "$CONFIG_FILE")
+
+
 detail_user() {
 
 CONFIG_FILE="/etc/hysteria/config.json"
-OBFS=$(jq -r '.obfs' "$CONFIG_FILE")
 OLD_PASSWORDS=($(jq -r '.auth.config | .[]' "$CONFIG_FILE"))
 
 # Check if there are passwords
@@ -247,7 +251,7 @@ clear
      msg -bar10
      msg -ne " ${a47:-Server IP}: " && msg -ama "    $request_public_ip"
      msg -ne " ${a48:-Auth/User}: " && msg -ama "        $nameuser"
-     msg -ne " ${a47:-OBFS}: " && msg -ama "             $OBFS"
+     msg -ne " ${a47:-OBFS}: " && msg -ama "             $OBF1"
      msg -ne " ${a50:-Days Remaining}: " && msg -ama "   $userdays"
      msg -ne " ${a44:-Maximum Users}: " && msg -ama "    $limiteuser"
      msg -ne " ${a51:-Expiration Date}: " && msg -ama "$(date "+%F" -d " + $userdays days")"
