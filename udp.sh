@@ -1,5 +1,5 @@
 #!/bin/bash
-# UDP Hysteria menu By Tesla SS
+# UDP Hysteria menu By Tesla SSH
 #dmain=$(cat domain.txt)
 source <(curl -sSL 'https://raw.githubusercontent.com/TeslaSSH/Tesla_UDP_custom-/main/module/module')
 request_public_ip=$(grep -m 1 -oE '^[0-9]{1,3}(\.[0-9]{1,3}){3}$' <<<"$(wget -T 10 -t 1 -4qO- "http://ip1.dynupdate.no-ip.com/" || curl -m 10 -4Ls "http://ip1.dynupdate.no-ip.com/")")
@@ -149,7 +149,7 @@ if [ ${#OLD_PASSWORDS[@]} -eq 0 ]; then
     echo ""
     print_center -ama "NO USERS FOUND IN THE DATABASE!"
     msg -bar3
-    exit 1
+    stepback
 fi
 
 # Print the passwords line by line
@@ -157,10 +157,10 @@ echo ""
 print_center -ama "USERS/AUTHS:"
 msg -bar3
 if [ ${#OLD_PASSWORDS[@]} -eq 1 ]; then
-    echo "${OLD_PASSWORDS[0]}"
+    msg -ama "${OLD_PASSWORDS[0]}"
 else
     for password in "${OLD_PASSWORDS[@]}"; do
-        echo "$password"
+        msg -ama "$password"
     done
 fi
 
@@ -288,7 +288,7 @@ if [ ${#OLD_PASSWORDS[@]} -eq 1 ]; then
     echo "${OLD_PASSWORDS[0]}"
 else
     for password in "${OLD_PASSWORDS[@]}"; do
-        echo "$password"
+        print_center -ama "$password"
     done
 fi
 

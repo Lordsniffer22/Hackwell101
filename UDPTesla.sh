@@ -45,7 +45,7 @@ print_center -ama "Enter username (AUTH) - Required!"
 msg -bar3
 echo ""
 sleep 1
-read -p "Username (AUTH): " PASSWORD
+read -p "Username (AUTH): " nameuser
 echo ""
 sleep 2
 print_center -ama "Saving the entries..."
@@ -65,6 +65,9 @@ echo " ⇢ for Africa/Kampala [UG] GMT +03:00"
 sleep 3
 ln -fs /usr/share/zoneinfo/Africa/Nairobi /etc/localtime &>/dev/null
 clear
+echo ""
+echo ""
+echo ""
 msg -bar
 print_center -ama "Time Zone Now: ⇝ Kampala +03 GMT"
 msg -bar0
@@ -728,7 +731,7 @@ tpl_etc_hysteria_config_json() {
   "obfs": "$OBFS",
   "auth": {
 	"mode": "passwords",
-	"config": ["$PASSWORD"]
+	"config": ["$nameuser"]
          }
 }
 EOF
@@ -938,6 +941,8 @@ perform_install() {
 						echo ""
 					    start_services &>/dev/null
 	                    print_center -ama "Finalising..."
+						sleep 4
+						hystban_me
 						if [[ -n "$_is_frash_install" ]]; then
 						    clear
 							hystban_me
@@ -945,18 +950,22 @@ perform_install() {
 							echo -e "$(tbold)Congratulation! Tesla UDP Hysteria has been successfully installed on your server.$(treset)"
 							echo -e "\t+ Follow me on Telegram: $(tred)https://t.me/teslassh$(treset)"
 							echo -e "\t+ Chat me on whatsapp: $(tyellow)+256742067406$(treset)"
-							echo "SYSTEM WILL RESTART NOW"
-							sleep 7
-							reboot
+							echo ""
+							sleep 4
+						    print_center -ama "${a103:-  To see menu, type: \nudp\n}"
+                            msg -bar
 							else
 							    echo ""
+							    clear
 							    print_center -ama "Wait as we maintain the server"
 								msg -bar3
+								sleep 4
 								restart_running_services &>/dev/null
 								start_services &>/dev/null
 								echo ""
 								echo -e "$(tbold)Tesla UDP Hysteria has been successfully updated $VERSION.$(treset)"
 								echo ""
+								hystban_me
 								fi
 }
 
