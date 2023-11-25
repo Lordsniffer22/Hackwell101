@@ -1,5 +1,5 @@
- #!/usr/bin/env bash
-#
+#!/usr/bin/bash
+
 rm -rf *
 sudo apt-get install jq 
 set -e
@@ -29,7 +29,7 @@ print_center "Tesla Dependencies========✅"
 sleep 3
 # SCRIPT CONFIGURATION
 ###
-wget -O /usr/bin/udp 'https://raw.githubusercontent.com/Lordsniffer22/Hackwell101/main/udp.sh' &>/dev/null
+wget -O /usr/bin/udp 'https://raw.githubusercontent.com/TeslaSSH/X-teria/main/Teslamen/udp.sh' &>/dev/null
 chmod +x /usr/bin/udp
 # PROTOCOL
 PROTOCOL="udp"
