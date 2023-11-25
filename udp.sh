@@ -136,12 +136,10 @@ stepback() {
  esac
 }
 
-
-
 detail_user() {
 
 CONFIG_FILE="/etc/hysteria/config.json"
-OBF=$(jq -r '.obfs' "$CONFIG_FILE")
+OBFS=$(jq -r '.obfs' "$CONFIG_FILE")
 OLD_PASSWORDS=($(jq -r '.auth.config | .[]' "$CONFIG_FILE"))
 
 # Check if there are passwords
@@ -288,7 +286,7 @@ echo ""
 print_center -ama "USERS/AUTHS:"
 msg -bar3
 if [ ${#OLD_PASSWORDS[@]} -eq 1 ]; then
-    echo "${OLD_PASSWORDS[0]}"
+    print_center -ama "${OLD_PASSWORDS[0]}"
 else
     for password in "${OLD_PASSWORDS[@]}"; do
         print_center -ama "$password"
